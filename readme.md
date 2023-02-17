@@ -27,6 +27,6 @@
 + 在一次 [commit](https://github.com/cartographer-project/cartographer/pull/530/commits/6da598f25d0f178b596d272cbacfca610d805538) 中，更改了 pose_extrapolator 的 odom 相关操作，改回后重新编译，没有改善。尙不明白他为什么要改成用最早和最晚的两帧 odom。
 ### 猜测
 + 可能是 bag 文件的问题，使用官方提供的 [cartographer_rosbag_validate](https://google-cartographer-ros.readthedocs.io/en/latest/your_bag.html#validate-your-bag) 工具检测，由于缺乏文档，尚不清楚输出信息的含义，有待排查。
-+ 可能是在转换 ekf 发布的 topic 时出现问题。由于 efk 发布的 topic 不包含 twist 消息，转换时将 odom 中的 twist 全部填0，由于 [carto 不使用 odom 中的 twist 消息](https://github.com/cartographer-project/cartographer_ros/issues/627)，这应该不会有影响。但不排除 odom_combined_odom 存在其他问题，还没想好怎么排查该转换带来的问题。
++ 可能是在转换 ekf 发布的 topic 时出现问题。由于 efk 发布的 topic 不包含 twist 消息，转换时将 odom 中的 twist 全部填0，由于 [carto 不使用 odom 中的 twist 消息](https://github.com/cartographer-project/cartographer_ros/issues/627)，这应该不会有影响。但不排除 odom_combined_odom 存在其他问题，还没想好怎么排查该转换带来的问题。但在使用车辆原始的 odom 时，也存在本问题，能在一定程度上说明本问题不仅是该转换造成的。
 + 可能是 odom 不准确导致。我通过在 odom frame 下，观察车辆旋转时 scan point 没有较大飘移，来判断 odom 较为准确，该方法无法定量。
 + 可能是参数不佳导致。仅限 options、TRAJECTORY_BUILDER_2D 中的参数，尤其是与 pose_extrapolator 有关的参数。
