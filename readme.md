@@ -12,6 +12,10 @@
 
 + odom topic：启动一个转换节点，订阅 robot_pose_ekf 发布的融合里程计 topic，并转为 odom 格式（为了满足 carto 对 odom 输入格式的要求）。具体而言，是将 ekf 发布的 [geometry_msgs/PoseWithCovarianceStamped](http://docs.ros.org/en/lunar/api/geometry_msgs/html/msg/PoseWithCovarianceStamped.html) （topic 名为 odom_combined）转为 [nav_msgs/Odometry Message](http://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html)（topic 名为 odom_combined_odom）。转换工作在录制 bag 时在线完成，bag 中已存在上述两种 topic。
 + odom frame：由 efk node 发布。
+
+### 运行方法
++ 直接运行 launch 文件。
++ 更改要使用的 bag 时，注释掉 launch 文件顶端对应内容即可。
 ---
 ## 已做工作
 ### 参数调整

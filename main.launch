@@ -1,15 +1,19 @@
 <launch>
-<!-- choose a bag file (odom_origin or odom_combined), and set the remap odom topic in cartographer_node) -->
-    <!-- <arg name="bag_file" value="$(dirname)/rotate_odom_origin.bag" /> -->
-    <arg name="bag_file" value="$(dirname)/rotate_odom_combined.bag" />
-
+    <!-- use origin odom -->
+    <arg name="bag_file" value="$(dirname)/rotate_odom_origin.bag" />
     <arg name="odom_topic" value="scout_base_node/odom" />
-    <arg name="odom_combined_topic" value="robot_pose_ekf/odom_combined_odom" />
+
+    <!-- use combined odom -->
+    <!-- <arg name="bag_file" value="$(dirname)/rotate_odom_combined.bag" />
+    <arg name="odom_topic" value="robot_pose_ekf/odom_combined_odom" /> -->
+
+
     <arg name="imu_topic" value="imu/imu_data" />
     <arg name="scan_topic" value="scan" />    
     <arg name="resolution" value="0.05" />
 
     <param name="/use_sim_time" value="true" />
+    <param name="robot_description" command="$(find xacro)/xacro $(dirname)/urdf/scout_v2.xacro"/>
 
     <node name="playbag" pkg="rosbag" type="play" args="--clock $(arg bag_file)" />
 
@@ -17,10 +21,9 @@
     args="-configuration_directory $(dirname) -configuration_basename cartographer.lua" output="screen">
         <remap from="imu" to="$(arg imu_topic)" />
         <remap from="scan" to="$(arg scan_topic)" />
-
-<!-- set odom topic -->
-        <!-- <remap from="odom" to="$(arg odom_topic)" /> -->
-        <remap from="odom" to="$(arg odom_combined_topic)" />
+        <remap from="odom" to="$(arg odom_topic)" />
     </node>
     <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" args="-resolution $(arg resolution)" />
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(dirname)/config.rviz" />
 </launch>
