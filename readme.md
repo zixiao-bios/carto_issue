@@ -36,5 +36,5 @@
 + 可能是参数不佳导致。仅限 options、TRAJECTORY_BUILDER_2D 中的参数，尤其是与 pose_extrapolator 有关的参数。
 
 ### 新的观察
-+ scan_matched_points 与 scan 有时间上的偏差。
++ scan_matched_points 与 scan 有时间上的偏差，[该 issue ](https://github.com/cartographer-project/cartographer_ros/issues/895)提到了类似问题。但我这里好像是 scan_matched_points （在姿态上）领先于 scan？
 + 车头扫过的方向，scan 会有一个 gap 很大的变化，这明显影响了建图效果。在开启 real_time_correlative_scan_matcher 这可能时影响建图的主要原因。在融合前和融合后的 odom frame 下，scan 都存在这个 gap。
