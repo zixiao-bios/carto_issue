@@ -34,3 +34,7 @@
 + 可能是在转换 ekf 发布的 topic 时出现问题。由于 efk 发布的 topic 不包含 twist 消息，转换时将 odom 中的 twist 全部填0，由于 [carto 不使用 odom 中的 twist 消息](https://github.com/cartographer-project/cartographer_ros/issues/627)，这应该不会有影响。但不排除 odom_combined_odom 存在其他问题，还没想好怎么排查该转换带来的问题。但在使用车辆原始的 odom 时，也存在抖动问题，能在一定程度上说明抖动不仅是该转换造成的。
 + 可能是 odom 不准确导致。我通过在 odom frame 下，观察车辆旋转时 scan point 没有较大飘移，来判断 odom 较为准确，该方法无法定量。
 + 可能是参数不佳导致。仅限 options、TRAJECTORY_BUILDER_2D 中的参数，尤其是与 pose_extrapolator 有关的参数。
+
+### 新的观察
++ scan_matched_points 与 scan 有时间上的偏差。
++ 车头扫过的方向，scan 会有一个 gap 很大的变化，这明显影响了建图效果。在开启 real_time_correlative_scan_matcher 这可能时影响建图的主要原因。在融合前和融合后的 odom frame 下，scan 都存在这个 gap。
